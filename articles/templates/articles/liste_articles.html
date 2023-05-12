@@ -4,9 +4,16 @@
 
 <button id="promo-button">Afficher les articles en promotion</button>
 
+<select id="category-filter">
+  <option value="">Toutes les catégories</option>
+  {% for category in categories %}
+  <option value="{{ category.id }}">{{ category.name }}</option>
+  {% endfor %}
+</select>
+
 <div class="row" id="article-list">
     {% for article in articles %}
-    <div class="col-md-4 article-card {% if article.promotion %}promotion{% endif %}">
+    <div class="col-md-4 article-card {% if article.promotion %}promotion{% endif %}" data-category="{{ article.category.id }}">
         <div class="card">
             <img class="card-img-top" src="{{ article.image.url }}" alt="{{ article.nom }}">
             <div class="card-body">
@@ -14,11 +21,11 @@
                 <p class="card-text">{{ article.description }}</p>
                 {% if article.promotion %}
                 <p class="card-text">
-                    <span class="text-muted">{{ article.categorie }} - <s>{{ article.prix }} €</s></span>
+                    <span class="text-muted">{{ article.category.name }} - <s>{{ article.prix }} €</s></span>
                     <span class="text-danger fw-bold">{{ article.promo_price|floatformat:2 }} €</span>
                 </p>
             {% else %}
-                <p class="card-text"><span class="text-muted">{{ article.categorie }} - {{ article.prix }} €</span></p>
+                <p class="card-text"><span class="text-muted">{{ article.category.name }} - {{ article.prix }} €</span></p>
             {% endif %}
                 {% if user.is_authenticated and user.is_staff %}
                 <a href="{% url 'promotion:add_promotion' article.id %}" class="btn btn-primary">Ajouter une promotion</a>
@@ -36,6 +43,19 @@ document.getElementById("promo-button").addEventListener("click", function() {
   for (var i = 0; i < cards.length; i++) {
     if (!cards[i].classList.contains("promotion")) {
       cards[i].style.display = "none";
+    }
+  }
+});
+
+document.getElementById("category-filter").addEventListener("change", function() {
+  var selectedCategoryId = this.value;
+  var articleList = document.getElementById("article-list");
+  var cards = articleList.getElementsByClassName("article-card");
+  for (var i = 0; i < cards.length; i++) {
+    if (selectedCategoryId && cards[i].dataset.category !== selectedCategoryId) {
+      cards[i].style.display = "none";
+    } else {
+      cards[i].style.display = "block";
     }
   }
 });
