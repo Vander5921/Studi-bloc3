@@ -12,7 +12,7 @@ def liste_articles(request):
             article.promo_price = article.prix - (article.prix * article.promotion.pourcentage / 100)
         else:
             article.promo_price = None
-    return render(request, 'articles/article_list.html', {'articles': articles})
+    return render(request, 'articles/liste_articles.html', {'articles': articles})
 
 
 
