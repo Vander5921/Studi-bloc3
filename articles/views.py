@@ -4,7 +4,7 @@ from .models import Article
 def liste_articles(request):
     category = request.GET.get('category')
     if category:
-        articles = Article.objects.filter(categorie=category)
+        articles = Article.objects.filter(category=category)
     else:
         articles = Article.objects.all()
     for article in articles:
@@ -13,8 +13,6 @@ def liste_articles(request):
         else:
             article.promo_price = None
     return render(request, 'articles/liste_articles.html', {'articles': articles})
-
-
 
 def home(request):
     articles = Article.objects.all()
