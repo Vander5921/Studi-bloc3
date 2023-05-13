@@ -2,9 +2,9 @@ from django.shortcuts import render
 from .models import Article
 
 def liste_articles(request):
-    category = request.GET.get('category')
+    category = request.GET.get('categorie')
     if category:
-        articles = Article.objects.filter(category=category)
+        articles = Article.objects.filter(categorie=category)
     else:
         articles = Article.objects.all()
     for article in articles:
