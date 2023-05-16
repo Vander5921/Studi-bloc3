@@ -14,3 +14,6 @@ class Article(models.Model):
     prix = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(storage=S3Boto3Storage(), upload_to='articles_images/')
     promotion = models.ForeignKey('promotion.Promotion', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self): 
+        return self.nom
